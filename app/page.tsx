@@ -1,16 +1,19 @@
+"use client";
 import Image from "next/image";
 import { MenuLandingPage } from "./component/landing-page-menu/page";
 import { Button } from "@/components/ui/button";
 import { LandingPageHero } from "./component/landing-page-hero/page";
-import { SearchIcon } from "lucide-react";
+import { SearchIcon, X } from "lucide-react";
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
+import { useState } from "react";
 
 export default function Home() {
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
   return (
     <main className="relative relative w-full bg-white dark:bg-black">
       <div className="relative z-0 -mt-[96px]">
@@ -34,17 +37,19 @@ export default function Home() {
           {/* login */}
           <div className="flex items-center justify-end p-4">
             <Button
+              onClick={() => setIsLoginOpen(true)}
               className="
-            bg-white 
-            border border-gray-300 
-            text-orange-500 
-            hover:bg-gray-100 
-            dark:bg-gray-800 
-            dark:border-gray-700 
-            dark:text-orange-400
-            text-[16px]
-            font-semibold
-            rounded-full"
+              bg-white 
+              border border-gray-300 
+              text-orange-500 
+              hover:bg-gray-100 
+              dark:bg-gray-800 
+              dark:border-gray-700 
+              dark:text-orange-400
+              text-[16px]
+              font-semibold
+              rounded-full
+              p-[20px]"
               size="lg"
             >
               Login
@@ -52,39 +57,45 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="flex relative z-[100] items-center justify-center p-6 bg-white shadow-lg w-[500px] h-auto rounded-xl mt-[-500px] mx-auto">
-  <Field className="w-full max-w-sm space-y-4">
-    
-    {/* Email Field */}
-    <div className="space-y-1">
-      <FieldLabel htmlFor="email-input" className="font-semibold uppercase text-xs text-gray-700">email</FieldLabel>
-      <InputGroup className="border border-gray-300 rounded-md px-3 py-1 flex items-center focus-within:ring-2 focus-within:ring-blue-500">
-        <InputGroupAddon align="inline-start">
-          <SearchIcon className="text-muted-foreground w-4 h-4 mr-2" />
-        </InputGroupAddon>
-        <InputGroupInput id="email-input" placeholder="Search..." className="w-full outline-none bg-transparent" />
-      </InputGroup>
-    </div>
-
-    {/* Password Field */}
-    <div className="space-y-1">
-      <FieldLabel htmlFor="password-input" className="font-semibold uppercase text-xs text-gray-700">password</FieldLabel>
-      <InputGroup className="border border-gray-300 rounded-md px-3 py-1 flex items-center focus-within:ring-2 focus-within:ring-blue-500">
-        <InputGroupAddon align="inline-start">
-          <SearchIcon className="text-muted-foreground w-4 h-4 mr-2" />
-        </InputGroupAddon>
-        <InputGroupInput id="password-input" type="password" placeholder="Search..." className="w-full outline-none bg-transparent" />
-      </InputGroup>
-    </div>
-
-    {/* Submit Button */}
-    <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-md transition-colors">
-      Submit
-    </button>
-    
-  </Field>
-</div>
-      
+      {isLoginOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+          <div className="relative w-full max-w-[500px] rounded-xl bg-white p-6 shadow-2xl dark:bg-gray-900">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              aria-label="Tutup form login"
+              onClick={() => setIsLoginOpen(false)}
+              className="absolute right-3 top-3"
+            >
+              <X />
+            </Button>
+            <Field className="w-full space-y-4 pt-2">
+              <FieldLabel htmlFor="email-input">Email</FieldLabel>
+              <InputGroup>
+                <InputGroupInput id="email-input" placeholder="Email" />
+                <InputGroupAddon align="inline-start">
+                  <SearchIcon className="text-muted-foreground" />
+                </InputGroupAddon>
+              </InputGroup>
+              <FieldLabel htmlFor="password-input">Password</FieldLabel>
+              <InputGroup>
+                <InputGroupInput
+                  id="password-input"
+                  type="password"
+                  placeholder="Password"
+                />
+                <InputGroupAddon align="inline-start">
+                  <SearchIcon className="text-muted-foreground" />
+                </InputGroupAddon>
+              </InputGroup>
+              <Button type="submit" className="w-full">
+                Submit
+              </Button>
+            </Field>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
