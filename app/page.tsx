@@ -1,28 +1,90 @@
 import Image from "next/image";
 import { MenuLandingPage } from "./component/landing-page-menu/page";
+import { Button } from "@/components/ui/button";
+import { LandingPageHero } from "./component/landing-page-hero/page";
+import { SearchIcon } from "lucide-react";
+import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 
 export default function Home() {
   return (
-    <main className="flex flex-1 w-full min-h-screen bg-white dark:bg-black">
-      <div className="w-full h-[80px] bg-blue-800 dark:bg-blue-800 rounded-[70px] flex items-center justify-between px-10 mt-4 mx-8">
-        {/* Sisi Kiri: Logo */}
-        <div className="relative w-[230px] h-[50px]">
-          <Image
-            src="/img/smk_mvp_ars_logo_white.png"
-            alt="Logo"
-            fill
-            className="object-contain object-left"
-          />
-        </div>
-
-        {/* Sisi Tengah: Menu (Sudah diperbaiki typo justify-center) */}
-        <div className="flex flex-1 items-center justify-center">
-          <MenuLandingPage />
-        </div>
-
-        {/* Sisi Kanan: Penyeimbang agar menu pas di tengah presisi */}
-        <div className="w-[230px]" />
+    <main className="relative relative w-full bg-white dark:bg-black">
+      <div className="relative z-0 -mt-[96px]">
+        <LandingPageHero />
       </div>
+      <div className="absolute top-0 left-0 z-10 w-full flex justify-center">
+        <div className="w-[95%] h-[80px] bg-blue-800 dark:bg-blue-800 rounded-[70px] flex mt-4 mx-8 p-4">
+          {/* logo */}
+          <div className="relative w-[200px] h-[50px] rounded-[70px] items-center justify-start">
+            <Image
+              className="p-[1px]"
+              src="/img/smk_mvp_ars_logo_white.png"
+              alt="logo"
+              fill
+            />
+          </div>
+          {/* menu */}
+          <div className="flex flex-1 items-center justify-center">
+            <MenuLandingPage />
+          </div>
+          {/* login */}
+          <div className="flex items-center justify-end p-4">
+            <Button
+              className="
+            bg-white 
+            border border-gray-300 
+            text-orange-500 
+            hover:bg-gray-100 
+            dark:bg-gray-800 
+            dark:border-gray-700 
+            dark:text-orange-400
+            text-[16px]
+            font-semibold
+            rounded-full"
+              size="lg"
+            >
+              Login
+            </Button>
+          </div>
+        </div>
+      </div>
+      <div className="flex relative z-[100] items-center justify-center p-6 bg-white shadow-lg w-[500px] h-auto rounded-xl mt-[-500px] mx-auto">
+  <Field className="w-full max-w-sm space-y-4">
+    
+    {/* Email Field */}
+    <div className="space-y-1">
+      <FieldLabel htmlFor="email-input" className="font-semibold uppercase text-xs text-gray-700">email</FieldLabel>
+      <InputGroup className="border border-gray-300 rounded-md px-3 py-1 flex items-center focus-within:ring-2 focus-within:ring-blue-500">
+        <InputGroupAddon align="inline-start">
+          <SearchIcon className="text-muted-foreground w-4 h-4 mr-2" />
+        </InputGroupAddon>
+        <InputGroupInput id="email-input" placeholder="Search..." className="w-full outline-none bg-transparent" />
+      </InputGroup>
+    </div>
+
+    {/* Password Field */}
+    <div className="space-y-1">
+      <FieldLabel htmlFor="password-input" className="font-semibold uppercase text-xs text-gray-700">password</FieldLabel>
+      <InputGroup className="border border-gray-300 rounded-md px-3 py-1 flex items-center focus-within:ring-2 focus-within:ring-blue-500">
+        <InputGroupAddon align="inline-start">
+          <SearchIcon className="text-muted-foreground w-4 h-4 mr-2" />
+        </InputGroupAddon>
+        <InputGroupInput id="password-input" type="password" placeholder="Search..." className="w-full outline-none bg-transparent" />
+      </InputGroup>
+    </div>
+
+    {/* Submit Button */}
+    <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-md transition-colors">
+      Submit
+    </button>
+    
+  </Field>
+</div>
+      
     </main>
   );
 }
