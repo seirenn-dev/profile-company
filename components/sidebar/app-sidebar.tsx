@@ -12,12 +12,11 @@ import {
 } from "@/components/ui/sidebar";
 import {
   LayoutDashboard,
-  Users,
   GraduationCap,
-  BookOpen,
-  Calendar,
+  ChartBarStacked,
   FileText,
-  Settings,
+  SquareUser,
+  UsersRound,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -62,15 +61,27 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
 
-                {/* Siswa */}
                 <SidebarMenuItem>
                   <SidebarMenuButton
                     asChild
                     className="text-white hover:bg-blue-700 hover:text-white active:bg-blue-800"
                   >
-                    <Link href="/admin/siswa">
-                      <Users className="w-4 h-4 mr-2" />
-                      <span>Siswa</span>
+                    <Link href="/admin/usermanagement">
+                      <UsersRound className="w-4 h-4 mr-2" />
+                      <span>usermanagement</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+
+                {/* category */}
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    asChild
+                    className="text-white hover:bg-blue-700 hover:text-white active:bg-blue-800"
+                  >
+                    <Link href="/admin/category">
+                      <ChartBarStacked className="w-4 h-4 mr-2" />
+                      <span>Category</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -84,32 +95,6 @@ export function AppSidebar() {
                     <Link href="/admin/jurusan">
                       <GraduationCap className="w-4 h-4 mr-2" />
                       <span>Jurusan</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-
-                {/* Mata Pelajaran */}
-                <SidebarMenuItem>
-                  <SidebarMenuButton
-                    asChild
-                    className="text-white hover:bg-blue-700 hover:text-white active:bg-blue-800"
-                  >
-                    <Link href="/admin/mata-pelajaran">
-                      <BookOpen className="w-4 h-4 mr-2" />
-                      <span>Mata Pelajaran</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-
-                {/* Jadwal */}
-                <SidebarMenuItem>
-                  <SidebarMenuButton
-                    asChild
-                    className="text-white hover:bg-blue-700 hover:text-white active:bg-blue-800"
-                  >
-                    <Link href="/admin/jadwal">
-                      <Calendar className="w-4 h-4 mr-2" />
-                      <span>Jadwal</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -133,9 +118,9 @@ export function AppSidebar() {
                     asChild
                     className="text-white hover:bg-blue-700 hover:text-white active:bg-blue-800"
                   >
-                    <Link href="/admin/pengaturan">
-                      <Settings className="w-4 h-4 mr-2" />
-                      <span>Pengaturan</span>
+                    <Link href="/admin/profile">
+                      <SquareUser className="w-4 h-4 mr-2" />
+                      <span>Profile</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -143,9 +128,8 @@ export function AppSidebar() {
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
-        
 
-        <SidebarFooter className="bg-blue-600" />
+        <SidebarFooter className="bg-blue-900" />
       </div>
     </Sidebar>
   );
