@@ -1,4 +1,7 @@
+"use client";
+
 import * as React from "react"
+import Link from "next/link"
 import { AppSidebar } from "@/app/component/sidebar/app-sidebar"
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -11,7 +14,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-// Hapus import Copy yang tidak terpakai dari lucide-react jika tidak dipakai
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -32,13 +34,28 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-44" align="end">
               <DropdownMenuGroup>
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Billing</DropdownMenuItem>
-                <DropdownMenuItem>Settings</DropdownMenuItem>
+                {/* Menggunakan asChild dan Link agar bisa diklik dan mengarah ke /profile */}
+                <DropdownMenuItem asChild>
+                  <Link href="/admin/profile" className="cursor-pointer w-full">
+                    Profile
+                  </Link>
+                </DropdownMenuItem>
+                
+                <DropdownMenuItem asChild>
+                  <Link href="/billing" className="cursor-pointer w-full">
+                    Billing
+                  </Link>
+                </DropdownMenuItem>
+
+                <DropdownMenuItem asChild>
+                  <Link href="/settings" className="cursor-pointer w-full">
+                    Settings
+                  </Link>
+                </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem className="text-red-600 focus:text-red-600 dark:text-red-400 dark:focus:text-red-400">
+                <DropdownMenuItem className="text-red-600 focus:text-red-600 dark:text-red-400 dark:focus:text-red-400 cursor-pointer">
                   Log out
                 </DropdownMenuItem>
               </DropdownMenuGroup>
