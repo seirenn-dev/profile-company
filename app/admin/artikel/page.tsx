@@ -1,5 +1,6 @@
 'use client';
 
+import * as React from "react";
 import { useRouter } from "next/navigation";
 import {
   Table,
@@ -11,23 +12,55 @@ import {
 } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { LayerArrowDown } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function AdminTablePage() {
   const router = useRouter();
+  const [showActivityBar, setShowActivityBar] = React.useState(false);
+  const [showPanel, setShowPanel] = React.useState(false);
 
   return (
-    <div className="space-y-6">
-      {/* Tombol Add User di luar card, diletakkan di sebelah kanan atas */}
-      <div className="flex justify-end">
-        <Button onClick={() => router.push("/admin/usermanagement/form")}>
-          <LayerArrowDown className="w-4 h-4 mr-2" /> form
-        </Button>
+    <div className="grid grid-cols-1 gap-6">
+      {/* Baris Atas: Tombol Dropdown di sebelah kanan atas */}
+      <div className="grid grid-cols-1 justify-items-end">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline">menu</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-40">
+            <DropdownMenuGroup>
+              {/* Opsi Form diubah menjadi DropdownMenuItem agar langsung merespons klik untuk pindah halaman */}
+              <DropdownMenuItem onClick={() => router.push("/admin/usermanagement/form")}>
+                Form
+              </DropdownMenuItem>
+
+              <DropdownMenuCheckboxItem
+                checked={showActivityBar}
+                onCheckedChange={setShowActivityBar}
+              >
+                Activity Bar
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={showPanel}
+                onCheckedChange={setShowPanel}
+              >
+                Panel
+              </DropdownMenuCheckboxItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {/* Card membungkus judul halaman dan tabel */}
-      <Card className="p-6">
-        <div className="mb-6">
+      <Card className="p-6 grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-1">
           <h1 className="text-2xl font-bold mb-1">Artikel</h1>
           <p className="text-muted-foreground text-sm">Welcome to the Artikel!</p>
         </div>

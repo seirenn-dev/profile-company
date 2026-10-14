@@ -1,12 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "tailwindcss";
 
 /* Tambahkan baris ini agar next-themes mendeteksi class dark */
 @custom-variant dark (&:where(.dark, .dark *));
-
-@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
@@ -43,6 +40,10 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  
+  /* Variabel Tambahan untuk Glow */
+  --color-glow: var(--glow-color);
+  
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -53,72 +54,91 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0.008 326);
+  --background: oklch(0.985 0.005 85);
+  --foreground: oklch(0.18 0.02 75);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0.008 326);
+  --card-foreground: oklch(0.18 0.02 75);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0.008 326);
-  --primary: oklch(0.491 0.27 292.581);
-  --primary-foreground: oklch(0.969 0.016 293.756);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
-  --muted: oklch(0.96 0.003 325.6);
-  --muted-foreground: oklch(0.542 0.034 322.5);
-  --accent: oklch(0.96 0.003 325.6);
-  --accent-foreground: oklch(0.212 0.019 322.12);
+  --popover-foreground: oklch(0.18 0.02 75);
+  
+  /* Nuansa Emas Mewah (Gold Primary) */
+  --primary: oklch(0.72 0.14 78);
+  --primary-foreground: oklch(0.15 0.02 75);
+  
+  --secondary: oklch(0.94 0.015 80);
+  --secondary-foreground: oklch(0.28 0.04 75);
+  --muted: oklch(0.95 0.01 80);
+  --muted-foreground: oklch(0.52 0.03 75);
+  --accent: oklch(0.94 0.02 80);
+  --accent-foreground: oklch(0.28 0.04 75);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0.005 325.62);
-  --input: oklch(0.922 0.005 325.62);
-  --ring: oklch(0.711 0.019 323.02);
-  --chart-1: oklch(0.828 0.111 230.318);
-  --chart-2: oklch(0.685 0.169 237.323);
-  --chart-3: oklch(0.588 0.158 241.966);
-  --chart-4: oklch(0.5 0.134 242.749);
-  --chart-5: oklch(0.443 0.11 240.79);
+  --border: oklch(0.88 0.02 80);
+  --input: oklch(0.88 0.02 80);
+  --ring: oklch(0.72 0.14 78);
+  
+  /* Chart Colors (Gold & Warm Tones) */
+  --chart-1: oklch(0.72 0.14 78);
+  --chart-2: oklch(0.62 0.12 70);
+  --chart-3: oklch(0.82 0.1 85);
+  --chart-4: oklch(0.52 0.1 65);
+  --chart-5: oklch(0.42 0.08 60);
+  
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0.008 326);
-  --sidebar-primary: oklch(0.541 0.281 293.009);
-  --sidebar-primary-foreground: oklch(0.969 0.016 293.756);
-  --sidebar-accent: oklch(0.96 0.003 325.6);
-  --sidebar-accent-foreground: oklch(0.212 0.019 322.12);
-  --sidebar-border: oklch(0.922 0.005 325.62);
-  --sidebar-ring: oklch(0.711 0.019 323.02);
+  
+  --sidebar: oklch(0.97 0.01 80);
+  --sidebar-foreground: oklch(0.18 0.02 75);
+  --sidebar-primary: oklch(0.72 0.14 78);
+  --sidebar-primary-foreground: oklch(0.15 0.02 75);
+  --sidebar-accent: oklch(0.94 0.02 80);
+  --sidebar-accent-foreground: oklch(0.28 0.04 75);
+  --sidebar-border: oklch(0.88 0.02 80);
+  --sidebar-ring: oklch(0.72 0.14 78);
+  
+  /* Warna Glow Mode Terang (Emas Lembut) */
+  --glow-color: 255 215 0; 
 }
 
 .dark {
-  --background: oklch(0.145 0.008 326);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.212 0.019 322.12);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.212 0.019 322.12);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.432 0.232 292.759);
-  --primary-foreground: oklch(0.969 0.016 293.756);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.263 0.024 320.12);
-  --muted-foreground: oklch(0.711 0.019 323.02);
-  --accent: oklch(0.263 0.024 320.12);
-  --accent-foreground: oklch(0.985 0 0);
+  --background: oklch(0.14 0.015 75);
+  --foreground: oklch(0.95 0.01 80);
+  --card: oklch(0.18 0.02 75);
+  --card-foreground: oklch(0.95 0.01 80);
+  --popover: oklch(0.18 0.02 75);
+  --popover-foreground: oklch(0.95 0.01 80);
+  
+  /* Deep Luxury Gold untuk Mode Gelap */
+  --primary: oklch(0.78 0.15 80);
+  --primary-foreground: oklch(0.15 0.02 75);
+  
+  --secondary: oklch(0.24 0.025 75);
+  --secondary-foreground: oklch(0.95 0.01 80);
+  --muted: oklch(0.24 0.025 75);
+  --muted-foreground: oklch(0.7 0.02 75);
+  --accent: oklch(0.24 0.025 75);
+  --accent-foreground: oklch(0.95 0.01 80);
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.542 0.034 322.5);
-  --chart-1: oklch(0.828 0.111 230.318);
-  --chart-2: oklch(0.685 0.169 237.323);
-  --chart-3: oklch(0.588 0.158 241.966);
-  --chart-4: oklch(0.5 0.134 242.749);
-  --chart-5: oklch(0.443 0.11 240.79);
-  --sidebar: oklch(0.212 0.019 322.12);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.606 0.25 292.717);
-  --sidebar-primary-foreground: oklch(0.969 0.016 293.756);
-  --sidebar-accent: oklch(0.263 0.024 320.12);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --ring: oklch(0.78 0.15 80);
+  
+  /* Chart Colors (Dark Mode Gold) */
+  --chart-1: oklch(0.78 0.15 80);
+  --chart-2: oklch(0.68 0.13 72);
+  --chart-3: oklch(0.85 0.1 85);
+  --chart-4: oklch(0.58 0.11 68);
+  --chart-5: oklch(0.48 0.09 62);
+  
+  --sidebar: oklch(0.16 0.02 75);
+  --sidebar-foreground: oklch(0.95 0.01 80);
+  --sidebar-primary: oklch(0.78 0.15 80);
+  --sidebar-primary-foreground: oklch(0.15 0.02 75);
+  --sidebar-accent: oklch(0.24 0.025 75);
+  --sidebar-accent-foreground: oklch(0.95 0.01 80);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.542 0.034 322.5);
+  --sidebar-ring: oklch(0.78 0.15 80);
+  
+  /* Warna Glow Mode Gelap (Emas Terang/Neon) */
+  --glow-color: 255 223 0;
 }
 
 @layer base {
@@ -127,8 +147,26 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
-  html {
-    @apply font-sans;
+
+  /* Terapkan Efek Glow Halus pada Komponen Utama */
+  .dark input,
+  .dark button,
+  .dark .card,
+  .dark .sidebar,
+  .dark header {
+     /* Hanya terapkan sedikit drop-shadow di dark mode agar tidak terlalu berat */
+     filter: drop-shadow(0 0 8px rgb(var(--glow-color) / 0.15));
+  }
+  
+  /* Efek khusus untuk elemen dengan aksen primary (tombol, badge) */
+  .bg-primary {
+     box-shadow: 0 0 15px rgb(var(--glow-color) / 0.3);
+  }
+  
+  /* Sidebar glow di dark mode */
+  .dark .sidebar > div {
+     box-shadow: 5px 0 25px rgb(var(--glow-color) / 0.1);
   }
 }
