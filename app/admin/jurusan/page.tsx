@@ -75,7 +75,7 @@ export default function AdminTablePage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
+            <TableRow>cd profile-com
               <TableCell className="font-medium">INV001</TableCell>
               <TableCell>Paid</TableCell>
               <TableCell>Credit Card</TableCell>
