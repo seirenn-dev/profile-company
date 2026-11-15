@@ -1,9 +1,10 @@
 'use client';
 
+import * as React from "react";
+import { useRouter } from "next/navigation";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -13,88 +14,72 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
+  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Link from "next/link";
-
-export function DropdownMenuSubmenu() {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">Open</Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
-            <Link href="/admin/profile">form</Link>
-          </DropdownMenuItem>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent>
-                <DropdownMenuItem>Email</DropdownMenuItem>
-                <DropdownMenuItem>Message</DropdownMenuItem>
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>More options</DropdownMenuSubTrigger>
-                  <DropdownMenuPortal>
-                    <DropdownMenuSubContent>
-                      <DropdownMenuItem>Calendly</DropdownMenuItem>
-                      <DropdownMenuItem>Slack</DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem>Webhook</DropdownMenuItem>
-                    </DropdownMenuSubContent>
-                  </DropdownMenuPortal>
-                </DropdownMenuSub>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Advanced...</DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
-          <DropdownMenuItem>
-            New Team
-            <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
 
 export default function AdminTablePage() {
+  const router = useRouter();
+  const [showActivityBar, setShowActivityBar] = React.useState(false);
+  const [showPanel, setShowPanel] = React.useState(false);
+
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Admin Table Page</h1>
-        <DropdownMenuSubmenu />
+    <div className="grid grid-cols-1 gap-6">
+      {/* Baris Atas: Tombol Dropdown di sebelah kanan atas */}
+      <div className="grid grid-cols-1 justify-items-end">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline">menu</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-40">
+            <DropdownMenuGroup>
+              {/* Opsi Form diubah menjadi DropdownMenuItem agar langsung merespons klik untuk pindah halaman */}
+              <DropdownMenuItem onClick={() => router.push("/admin/user-management/form")}>
+                Form
+              </DropdownMenuItem>
+
+              <DropdownMenuCheckboxItem
+                checked={showActivityBar}
+                onCheckedChange={setShowActivityBar}
+              >
+                Activity Bar
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={showPanel}
+                onCheckedChange={setShowPanel}
+              >
+                Panel
+              </DropdownMenuCheckboxItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
-      <Card className="p-6">
-        <p>Welcome to the usermanagement table page!</p>
-        <Table className="mt-4">
-          <TableCaption>A list of your recent invoices.</TableCaption>
+      {/* Card membungkus judul halaman dan tabel */}
+      <Card className="p-6 grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-1">
+          <h1 className="text-2xl font-bold mb-1">User Management</h1>
+          <p className="text-muted-foreground text-sm">Welcome to the user management page!</p>
+        </div>
+
+        <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Invoice</TableHead>
+              <TableHead className="w-[100px]">Invoice</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Method</TableHead>
-              <TableHead>Amount</TableHead>
+              <TableHead className="text-right">Amount</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             <TableRow>
-              <TableCell>INV001</TableCell>
+              <TableCell className="font-medium">INV001</TableCell>
               <TableCell>Paid</TableCell>
               <TableCell>Credit Card</TableCell>
-              <TableCell>$250.00</TableCell>
+              <TableCell className="text-right">$250.00</TableCell>
             </TableRow>
           </TableBody>
         </Table>

@@ -1,104 +1,233 @@
-'use client';
+'use client'
 
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { Pencil, Plus, Trash2 } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import Link from "next/link";
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table"
 
-export function DropdownMenuSubmenu() {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">Open</Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
-            <Link href="/admin/profile">form</Link>
-          </DropdownMenuItem>
-          <DropdownMenuSub>
-            <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
-            <DropdownMenuPortal>
-              <DropdownMenuSubContent>
-                <DropdownMenuItem>Email</DropdownMenuItem>
-                <DropdownMenuItem>Message</DropdownMenuItem>
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>More options</DropdownMenuSubTrigger>
-                  <DropdownMenuPortal>
-                    <DropdownMenuSubContent>
-                      <DropdownMenuItem>Calendly</DropdownMenuItem>
-                      <DropdownMenuItem>Slack</DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem>Webhook</DropdownMenuItem>
-                    </DropdownMenuSubContent>
-                  </DropdownMenuPortal>
-                </DropdownMenuSub>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Advanced...</DropdownMenuItem>
-              </DropdownMenuSubContent>
-            </DropdownMenuPortal>
-          </DropdownMenuSub>
-          <DropdownMenuItem>
-            New Team
-            <DropdownMenuShortcut>⌘+T</DropdownMenuShortcut>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
+type ManagedCategory = {
+    id: number
+    name: string
 }
 
-export default function AdminTablePage() {
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Admin Table Page</h1>
-        <DropdownMenuSubmenu />
-      </div>
+const PAGE_SIZE = 10
 
-      <Card className="p-6">
-        <p>Welcome to the kategori table page!</p>
-        <Table className="mt-4">
-          <TableCaption>A list of your recent invoices.</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Invoice</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Method</TableHead>
-              <TableHead>Amount</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <TableRow>
-              <TableCell>INV001</TableCell>
-              <TableCell>Paid</TableCell>
-              <TableCell>Credit Card</TableCell>
-              <TableCell>$250.00</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </Card>
-    </div>
-  );
+export default function CategoriesPage() {
+    const router = useRouter()
+    const [categories, setCategories] = useState<ManagedCategory[]>([])
+    const [currentPage, setCurrentPage] = useState(1)
+    const [totalCategories, setTotalCategories] = useState(0)
+    const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState("")
+
+    async function loadCategories(page = currentPage) {
+        setIsLoading(true)
+        setError("")
+        try {
+            const response = await fetch(`/api/categories?page=${page}&pageSize=${PAGE_SIZE}`)
+            const result = await response.json()
+            if (!response.ok) throw new Error(result.error ?? "Gagal memuat kategori.")
+            setCategories(result.categories)
+            setTotalCategories(result.pagination.totalCategories ?? result.pagination.total ?? 0)
+            setCurrentPage(result.pagination.page)
+        } catch (loadError) {
+            setError(loadError instanceof Error ? loadError.message : "Gagal memuat kategori.")
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        let isActive = true
+
+        async function initialLoad() {
+            try {
+                const response = await fetch(`/api/categories?page=1&pageSize=${PAGE_SIZE}`)
+                const result = await response.json()
+                if (!response.ok) throw new Error(result.error ?? "Gagal memuat kategori.")
+                if (isActive) {
+                    setCategories(result.categories)
+                    setTotalCategories(result.pagination.totalCategories ?? result.pagination.total ?? 0)
+                    setCurrentPage(result.pagination.page)
+                }
+            } catch (loadError) {
+                if (isActive) {
+                    setError(loadError instanceof Error ? loadError.message : "Gagal memuat kategori.")
+                }
+            } finally {
+                if (isActive) setIsLoading(false)
+            }
+        }
+
+        void initialLoad()
+        return () => {
+            isActive = false
+        }
+    }, [])
+
+    function goToPage(page: number) {
+        setCurrentPage(page)
+        void loadCategories(page)
+    }
+
+    async function deleteCategory(category: ManagedCategory) {
+        if (!window.confirm(`Hapus kategori ${category.name}?`)) return
+        setError("")
+        try {
+            const response = await fetch(`/api/categories/${category.id}`, { method: "DELETE" })
+            const result = await response.json()
+            if (!response.ok) throw new Error(result.error ?? "Gagal menghapus kategori.")
+            if (categories.length === 1 && currentPage > 1) {
+                goToPage(currentPage - 1)
+            } else {
+                await loadCategories(currentPage)
+            }
+        } catch (deleteError) {
+            setError(deleteError instanceof Error ? deleteError.message : "Gagal menghapus kategori.")
+        }
+    }
+
+    const totalPages = Math.max(1, Math.ceil(totalCategories / PAGE_SIZE))
+
+    return (
+        <Card className="m-6 px-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                    <h1 className="mb-1 text-2xl font-bold">Categories</h1>
+                    <p className="text-sm text-muted-foreground">Kelola daftar kategori.</p>
+                </div>
+                <Button onClick={() => router.push("/admin/categories/form/add")}>
+                    <Plus aria-hidden="true" />
+                    Tambah kategori
+                </Button>
+            </div>
+
+            {error && <p role="alert" className="mt-4 text-sm text-destructive">{error}</p>}
+
+            <div className="mt-5 overflow-x-auto">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>ID</TableHead>
+                            <TableHead>Nama</TableHead>
+                            <TableHead className="text-right">Aksi</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {isLoading ? (
+                            <TableRow><TableCell colSpan={3} className="text-center">Memuat kategori...</TableCell></TableRow>
+                        ) : categories.length === 0 ? (
+                            <TableRow><TableCell colSpan={3} className="text-center">Belum ada kategori.</TableCell></TableRow>
+                        ) : categories.map((category) => (
+                            <TableRow key={category.id}>
+                                <TableCell>{category.id}</TableCell>
+                                <TableCell className="font-medium">{category.name}</TableCell>
+                                <TableCell>
+                                    <div className="flex justify-end gap-1">
+                                        <Button
+                                            type="button"
+                                            variant="ghost"
+                                            size="icon"
+                                            aria-label={`Edit ${category.name}`}
+                                            title="Edit kategori"
+                                            onClick={() => router.push(`/admin/categories/form/${category.id}`)}
+                                        >
+                                            <Pencil aria-hidden="true" />
+                                        </Button>
+                                        <Button
+                                            type="button"
+                                            variant="ghost"
+                                            size="icon"
+                                            aria-label={`Hapus ${category.name}`}
+                                            title="Hapus kategori"
+                                            onClick={() => void deleteCategory(category)}
+                                        >
+                                            <Trash2 aria-hidden="true" />
+                                        </Button>
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </div>
+
+            <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+                <Pagination>
+                    <PaginationContent>
+                        <PaginationItem>
+                            <PaginationPrevious
+                                href="#"
+                                aria-disabled={currentPage === 1 || isLoading}
+                                className={currentPage === 1 || isLoading ? "pointer-events-none opacity-50" : undefined}
+                                onClick={(event) => {
+                                    event.preventDefault()
+                                    if (currentPage > 1 && !isLoading) goToPage(currentPage - 1)
+                                }}
+                            />
+                        </PaginationItem>
+                        {getPageItems(currentPage, totalPages).map((item, index) => (
+                            <PaginationItem key={`${item}-${index}`}>
+                                {item === "ellipsis" ? (
+                                    <PaginationEllipsis />
+                                ) : (
+                                    <PaginationLink
+                                        href="#"
+                                        isActive={item === currentPage}
+                                        aria-label={`Go to page ${item}`}
+                                        onClick={(event) => {
+                                            event.preventDefault()
+                                            if (!isLoading && item !== currentPage) goToPage(item)
+                                        }}
+                                    >
+                                        {item}
+                                    </PaginationLink>
+                                )}
+                            </PaginationItem>
+                        ))}
+                        <PaginationItem>
+                            <PaginationNext
+                                href="#"
+                                aria-disabled={currentPage === totalPages || isLoading}
+                                className={currentPage === totalPages || isLoading ? "pointer-events-none opacity-50" : undefined}
+                                onClick={(event) => {
+                                    event.preventDefault()
+                                    if (currentPage < totalPages && !isLoading) goToPage(currentPage + 1)
+                                }}
+                            />
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
+            </div>
+        </Card>
+    )
+}
+
+function getPageItems(currentPage: number, totalPages: number): Array<number | "ellipsis"> {
+    if (totalPages <= 4) {
+        return Array.from({ length: totalPages }, (_, index) => index + 1)
+    }
+    if (currentPage <= 2) return [1, 2, 3, "ellipsis"]
+    if (currentPage >= totalPages - 1) {
+        return ["ellipsis", totalPages - 2, totalPages - 1, totalPages]
+    }
+    return [1, "ellipsis", currentPage - 1, currentPage, currentPage + 1, "ellipsis"]
 }

@@ -12,35 +12,24 @@ import {
 } from "@/components/ui/sidebar";
 import {
   LayoutDashboard,
-  Users,
   GraduationCap,
+  ChartBarStacked,
   FileText,
+  SquareUser,
   UsersRound,
-  House,
-  List,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const listMenu = [
-  { 
-    name: "Dashboard",
-    url: "/admin", 
-    icon: House,
-
-    name: "User Management",
-    url: "/admin/user-management", 
-    icon: UsersRound, 
-  },
-];
-
 export function AppSidebar() {
   return (
-    <Sidebar className="border-r-0 [&>div]:bg-red-600 [&>div]:text-white">
-      <div className="flex h-full w-full flex-col bg-red-400 text-white">
-        {/* Header Logo */}
-        <SidebarHeader className="p-4 bg-red-600">
-          <div className="flex items-center justify-center gap-3 px-3 py-2">
+    <Sidebar className="border-r-0 [&>div]:bg-gradient-to-b [&>div]:from-[#d4af37] [&>div]:via-[#aa771c] [&>div]:to-[#805510] [&>div]:text-white [&>div]:shadow-[0_0_25px_rgba(212,175,55,0.4)]">
+      {/* Container utama dengan gradasi emas dan efek glow bayangan keemasan */}
+      <div className="flex h-full w-full flex-col bg-gradient-to-b from-[#d4af37] via-[#aa771c] to-[#805510] text-white shadow-[0_0_25px_rgba(212,175,55,0.4)]">
+        
+        {/* Header Logo dengan sedikit efek glow pada logo */}
+        <SidebarHeader className="p-4 bg-transparent">
+          <div className="flex items-center justify-center gap-3 px-3 py-2 drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
             <Image
               src="/img/smk_mvp_ars_logo_white.png"
               alt="SMK MVP ARS"
@@ -53,18 +42,18 @@ export function AppSidebar() {
         </SidebarHeader>
 
         {/* Content Menu */}
-        <SidebarContent className="bg-red-600">
+        <SidebarContent className="bg-transparent">
           <SidebarGroup>
-            <SidebarGroupLabel className="text-white/80 text-xs font-semibold px-2 mb-2">
+            <SidebarGroupLabel className="text-white/90 text-xs font-semibold px-2 mb-2 tracking-wider">
               Menu Utama
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              
-              {/* Dashboard */}
+              <SidebarMenu>
+                {/* Dashboard */}
                 <SidebarMenuItem>
                   <SidebarMenuButton
                     asChild
-                    className="text-white hover:bg-red-700 hover:text-white active:bg-blue-800"
+                    className="text-white hover:bg-white/25 hover:text-white hover:shadow-[0_0_15px_rgba(255,215,0,0.6)] active:bg-white/30 transition-all duration-300"
                   >
                     <Link href="/admin">
                       <LayoutDashboard className="w-4 h-4 mr-2" />
@@ -72,32 +61,29 @@ export function AppSidebar() {
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-              
-              <SidebarMenu>
-                
-                {listMenu.map((menu) => (
-                  <SidebarMenuItem key={menu.name}>
-                    <SidebarMenuButton
-                      asChild
-                      className="text-white hover:bg-red-700 hover:text-white active:bg-blue-800"
-                    >
-                      <Link href={menu.url}>
-                        <menu.icon className="w-4 h-4 mr-2" />
-                        <span>{menu.name}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
 
-                {/* categories */}
+                {/* User Management */}
                 <SidebarMenuItem>
                   <SidebarMenuButton
                     asChild
-                    className="text-white hover:bg-red-700 hover:text-white active:bg-blue-800"
+                    className="text-white hover:bg-white/25 hover:text-white hover:shadow-[0_0_15px_rgba(255,215,0,0.6)] active:bg-white/30 transition-all duration-300"
+                  >
+                    <Link href="/admin/user-management">
+                      <UsersRound className="w-4 h-4 mr-2" />
+                      <span>usermanagement</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+
+                {/* Category */}
+                <SidebarMenuItem>
+                  <SidebarMenuButton
+                    asChild
+                    className="text-white hover:bg-white/25 hover:text-white hover:shadow-[0_0_15px_rgba(255,215,0,0.6)] active:bg-white/30 transition-all duration-300"
                   >
                     <Link href="/admin/categories">
-                      <List className="w-4 h-4 mr-2" />
-                      <span>categories</span>
+                      <ChartBarStacked className="w-4 h-4 mr-2" />
+                      <span>Category</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -106,7 +92,7 @@ export function AppSidebar() {
                 <SidebarMenuItem>
                   <SidebarMenuButton
                     asChild
-                    className="text-white hover:bg-red-700 hover:text-white active:bg-blue-800"
+                    className="text-white hover:bg-white/25 hover:text-white hover:shadow-[0_0_15px_rgba(255,215,0,0.6)] active:bg-white/30 transition-all duration-300"
                   >
                     <Link href="/admin/jurusan">
                       <GraduationCap className="w-4 h-4 mr-2" />
@@ -119,7 +105,7 @@ export function AppSidebar() {
                 <SidebarMenuItem>
                   <SidebarMenuButton
                     asChild
-                    className="text-white hover:bg-red-700 hover:text-white active:bg-blue-800"
+                    className="text-white hover:bg-white/25 hover:text-white hover:shadow-[0_0_15px_rgba(255,215,0,0.6)] active:bg-white/30 transition-all duration-300"
                   >
                     <Link href="/admin/artikel">
                       <FileText className="w-4 h-4 mr-2" />
@@ -128,25 +114,24 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
 
-                {/* profile */}
+                {/* Profile */}
                 <SidebarMenuItem>
                   <SidebarMenuButton
                     asChild
-                    className="text-white hover:bg-red-700 hover:text-white active:bg-blue-800"
+                    className="text-white hover:bg-white/25 hover:text-white hover:shadow-[0_0_15px_rgba(255,215,0,0.6)] active:bg-white/30 transition-all duration-300"
                   >
                     <Link href="/admin/profile">
-                      <Users className="w-4 h-4 mr-2" />
+                      <SquareUser className="w-4 h-4 mr-2" />
                       <span>Profile</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
 
-        <SidebarFooter className="bg-red-600" />
+        <SidebarFooter className="bg-transparent" />
       </div>
     </Sidebar>
   );
